@@ -1,5 +1,5 @@
 ## Overview
-The goal of this work is to eliminate issues found by manually entering connectomic data for our desired query. The metadata fields are organized into categories: projects,collections,experiments,and channels. 
+The goal of this work is to eliminate issues found by manually entering connectomic data for our desired query. The metadata fields are organized into categories: projects, collections, experiments, and channels. 
 
 ### Configuration file
 A `config.yaml` file is provided where a user can specify input files and categories for the Data Conversion and Validator scripts.  Parameters corresponding to each script are as follows:
