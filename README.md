@@ -1,34 +1,5 @@
-# 3D Microscopy Metadata Standards (3D-MMS)  - JSON Validation
-
 ## Overview
-The 3D Microscopy Metadata Standards (3D-MMS)  developed by the [BRAIN 3D Microscopy Working Group](https://doryworkspace.org/WorkingGroupRoster), helps ensure that a 3D microscopy dataset is sufficiently described to support its’ re-use by scientists who did not generate the data. Adoption of these metadata standards will aid investigators who want to share data, helping them to evaluate and decide which data can be combined.
-
-The metadata fields are organized into seven categories: Contributors, Funders, Publication, Instrument, Dataset, Specimen, and Image.  Each metadata field is specified by a name, definition, a list of allowable values, whether it is required, and the number of times it can be repeated for a dataset.  The tables for each metadata field can be found at the DORY Workspace site linked below:
-
-https://doryworkspace.org/metadata
-
-## Funding
-The research was supported by the National Institute Of Mental Health of the National Institute of Health under Award Number R24MH114683. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
-
-## Branch status
-The main branch is at version 1.0, as of January 28, 2022.
-
-## Initialization
-
-### Python
-This code was written in Python 3 (versions 3.6.8 and above).
-
-The list of required Python packages is provided in `requirements.txt` and can be used to initialize an environment of the user's choice.  These can be installed using either of the following commands depending on your OS:
-
-Windows
-```
-pip install -r requirements.txt
-```
-
-Mac/Linux
-```
-pip3 install -r requirements.txt
-```
+The goal of this work is to eliminate issues found by manually entering connectomic data for our desired query. The metadata fields are organized into categories: projects,collections,experiments,and channels. 
 
 ### Configuration file
 A `config.yaml` file is provided where a user can specify input files and categories for the Data Conversion and Validator scripts.  Parameters corresponding to each script are as follows:
@@ -42,12 +13,6 @@ A `config.yaml` file is provided where a user can specify input files and catego
 
 Input files should be placed in the directory `json_schemas/input_files`.
 
-## Data Input in Excel Format
-To add microscopy metadata, use the following steps:
-- navigate to `json_schemas/input_files`
-- make a copy of the Excel file `3D_microscopy_metadata_entry_template.xlsm` and rename to something else (suggested `3D_microscopy_metadata_entry.xlsm`)
-- change the `input_excel_file` parameter above to this new name
-- open the new Excel file and follow instructions in the `README` sheet
 
 ## Data Conversion and Validation usage
 
@@ -91,15 +56,15 @@ To run the validator, from the main directory, run the following in the command 
 python json_schema_test.py
 ```
 
-This will use the configuration found in `config.yaml`.  To specify a different input file or category from the command line, use the `-i` or `-c` arguments, respectively, as detailed in the Command Line Options section.  An example of specifying from the command line for the category `funders` is below.
+This will use the configuration found in `config.yaml`.  To specify a different input file or category from the command line, use the `-i` or `-c` arguments, respectively, as detailed in the Command Line Options section.  An example of specifying from the command line for the category `testing` is below.
 
 ```
-python json_schema_validator.py -c funders -i funders_test.json
+python json_schema_validator.py -c testing -i testing_test.json
 ```
 
 ```
 usage: json_schema_test.py [-h] [-i INPUT_FILE_NAME]
-                           [-c {contributors,dataset,funders,image,instrument,publication,record,specimen}]
+                           [-c {projects,collections,experiments,channels}]
 
 Run the annotators.
 
@@ -107,6 +72,6 @@ optional arguments:
   -h, --help            show this help message and exit
   -i INPUT_FILE_NAME, --input_file_name INPUT_FILE_NAME
                         Tell which input data file to validate.
-  -c {contributors,dataset,funders,image,instrument,publication,record,specimen}, --category {contributors,dataset,funders,image,instrument,publication,record,specimen}
+  -c {projects,collections,experiments,channels}, --category {projects,collections,experiments,channels}
                         Metadata category to validate
 ```

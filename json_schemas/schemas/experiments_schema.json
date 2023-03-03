@@ -1,24 +1,24 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "FUNDERS",
-    "title": "Funders",
-    "description": "The Funders category includes five metadata fields that describe the organizations providing financial support for the generation of the dataset.",
+    "$id": "testing",
+    "title": "testing",
+    "description": "The testing category includes five metadata fields that describe the organizations providing financial support for the generation of the dataset.",
     "type": "array",
     "items": {
         "type": "object",
         "properties": {
-            "funderName": {
+            "testingName": {
                 "description": "Name of the funder.",
                 "type": "string"
             },
-            "fundingReferenceIdentifier": {
+            "testingReferenceIdentifier": {
                 "description": "Alphanumeric code that uniquely identifies an individual or legal entity. Preferred identifier is ROR. ",
                 "type": "array",
                 "items": {
                     "type": "string"
                 }
             },
-            "fundingReferenceIdentifierType": {
+            "testingReferenceIdentifierType": {
                 "description": "The Identifying scheme used in fundingReferenceIdentifier.",
                 "type": "array",
                 "items": {
@@ -55,7 +55,7 @@
             }
         },
         "then": {
-            "required": ["funderName", "fundingReferenceIdentifier", "fundingReferenceIdentifierType", "awardNumber", "awardTitle"]
+            "required": ["testingName", "testingReferenceIdentifier", "testingReferenceIdentifierType", "awardNumber", "awardTitle"]
         },
         "else": {
             "required": []

@@ -36,7 +36,7 @@ parser = argparse.ArgumentParser(description='Run the validator.')
 parser.add_argument('-c', '--category',
                     choices=['contributors',
                     'dataset',
-                    'funders',
+                    'testing',
                     'image',
                     'instrument',
                     'publication',
@@ -61,7 +61,7 @@ schema = load_schema(input_category)
 categories_dict = {
     "Contributors": [ "datasetID", "contributorName", "Creator", "contributorType", "nameType", "nameIdentifier", "nameIdentifierScheme", "affiliation", "affiliationIdentifier", "affiliationIdentifierScheme" ],
     "Dataset": [ "datasetID", "Title", "socialMedia", "Subject", "subjectScheme", "Rights", "rightsURI", "rightsIdentifier", "Image", "generalModality", "generalModalityOther", "Technique", "techniqueOther", "Abstract", "Methods", "technicalInfo" ],
-    "Funders": [ "datasetID", "funderName", "fundingReferenceIdentifier", "fundingReferenceIdentifierType", "awardNumber", "awardTitle" ],
+    "testing": [ "datasetID", "funderName", "fundingReferenceIdentifier", "fundingReferenceIdentifierType", "awardNumber", "awardTitle" ],
     "Image": [ "datasetID", "xAxis", "obliqueXDim1", "obliqueXDim2", "obliqueXDim3", "yAxis", "obliqueYDim1", "obliqueYDim2", "obliqueYDim3", "zAxis", "obliqueZDim1", "obliqueZDim2", "obliqueZDim3", "landmarkName", "landmarkX", "landmarkY", "landmarkZ", "Number", "displayColor", "Representation", "Flurophore", "stepSizeX", "stepSizeY", "stepSizeZ", "stepSizeT", "Channel", "Slices", "t", "xSize", "ySize", "zSize", "Gbyte", "File", "dimensionOrder" ],
     "Instrument": [ "datasetID", "microscopeType", "microscopeManufacturerAndModel", "objectiveManufacturerAndModel", "objectiveImmersion", "objectiveNA", "objectiveMagnification", "detectorType", "detectorManufacturerAndModel", "illuminationType", "illuminationWavelength", "detectionWavelength", "sampleTemperature" ],
     "Publications": [ "datasetID", "relatedIdentifier", "relatedIdentifierType", "PMCID", "relationType", "Citation" ],

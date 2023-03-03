@@ -14,7 +14,7 @@ from jsonschema.validators import Draft7Validator
 # ========================================== Script Information ===========================================
 '''
 This script takes an input data entry excel file containing metadata and splits it into individual 
-csv files for each metadata group (Contributors, Funders, etc.). The individual csv files are then parsed and converted
+csv files for each metadata group (projects, testing, etc.). The individual csv files are then parsed and converted
 into a dictionary representation of the metadata record which is then written to a json file. The json file can be
 validated against record_schema.json.
 Data entry file: 3D-Microscopy-Metadata-Standards-3D-MMS/json_schemas/input_files/3D_brain_microscopy_metadata_entry_template.xlsm 
@@ -27,6 +27,7 @@ def split_csv(val):
     :return: input string split into a list
     """
     p = "\([^\)\(]*\)"  # matches sets of parentheses
+   # p = "\|[^\|\|]*\|"  # matches sets of bars
     if type(val) != str:
         return val
     matches = re.findall(p, val) # find all sets of parentheses
@@ -34,8 +35,8 @@ def split_csv(val):
 
     if num_matches == 0: # if there are no parentheses, split using a ","
         split_val = val.split(',')
-    elif num_matches == 1: # if there is one set of parentheses, remove the parentheses and split using a ","
-        split_val = val[1:-1].split(',')
+    elif num_matches == 1: # if there is one set of parentheses, remove the parentheses and split using a ""
+        split_val = val[1:-1].split("| |")
     elif num_matches > 1: # if there are multiple sets of parentheses, split on the parentheses
         split_val = list(matches)
 
@@ -54,8 +55,9 @@ def extract_csvs(input_excel_file, datestamp):
     :return: None
     """
 
-    sheet_names = ['Contributors', 'Publications', 'Funders', 'Instrument', 'Dataset', "Specimen", "Image", "README", "dropdown"]
-    excel_dict = pd.read_excel(input_excel_file, sheet_name=None, skiprows=2, engine="openpyxl")
+    sheet_names = ['projects', 'Collections', 'Experiments', 'Channels']
+                   #'Publications', 'testing', 'Instrument', 'Dataset', "Specimen", "Image", "README", "dropdown"]
+    excel_dict = pd.read_excel(input_excel_file, sheet_name=None, engine="openpyxl")
     path = f"json_schemas/output_files/{datestamp}"
 
     if not os.path.exists(path):
@@ -74,7 +76,7 @@ def extract_csvs(input_excel_file, datestamp):
             with open(output_file, 'w+', encoding="utf-8") as f:
                 output_df = excel_dict[sheet]
                 output_df.drop(output_df.filter(regex="Unname"),axis=1, inplace=True)
-                output_df = output_df[output_df['datasetID*'].notna()]
+                output_df = output_df[output_df['ID'].notna()]
                 output_df.to_csv(f, index=False)
 
 
@@ -106,7 +108,7 @@ def parse_row(df, i, group_id_col, csvCols):
     :return: dictionary with information from the row (row_dict) as well as the dataset and group ids
     '''
     row_dict = df.iloc[i].to_dict()  # current row represented as a dictionary
-    dataset_id = row_dict['datasetID']
+    dataset_id = row_dict['ID']
 
     # Set group id if there is one
     if group_id_col is not None:
@@ -153,7 +155,7 @@ def get_group_id(df):
     """
     group_id_rows = [col for col in df.columns if
                      (re.search('[^k]Name$', col) or re.search('relatedIdentifier$', col))]  # identify unique id column
-    dataset_ids = list(set(df['datasetID']))
+    dataset_ids = list(set(df['ID']))
 
     # Identify the column containing the unique identifier for the metadata group
     if len(group_id_rows) == 1:  # if a unique identifier is found
@@ -165,7 +167,7 @@ def get_group_id(df):
 
 def parse_group_csv(metadata_record, metadata_group, metadata_groups):
     """
-    Parse the csv file for a metadata group (Contributors, Funders, etc.) and return a dictionary containing
+    Parse the csv file for a metadata group (projects, testing, etc.) and return a dictionary containing
     the information in the csv file
     :param metadata_group: Group name for the metadata group being processed
     :param metadata_groups: List of all metadata groups
@@ -213,7 +215,7 @@ def parse_csvs():
     Cycle through the metadata_groups and parse each corresponding csv file into a metadata_record dictionary.
     :return: dictionary with the metadata from all of the groups.
     """
-    metadata_groups= ['Contributors', 'Publications', 'Funders', 'Instrument', 'Dataset', "Specimen", "Image"]
+    metadata_groups= ['Projects', 'Collections', 'Experiments', 'Channels']
     metadata_record = {}
     for c in metadata_groups:
         # metadata_record = parse_group_csv(c, metadata_groups)
@@ -276,14 +278,24 @@ write_json(metadata_record, datestamp)
 schema = load_schema('record')
 
 categories_dict = {
-    "Contributors": [ "datasetID", "contributorName", "Creator", "contributorType", "nameType", "nameIdentifier", "nameIdentifierScheme", "affiliation", "affiliationIdentifier", "affiliationIdentifierScheme" ],
-    "Dataset": [ "datasetID", "Title", "socialMedia", "Subject", "subjectScheme", "Rights", "rightsURI", "rightsIdentifier", "Image", "generalModality", "generalModalityOther", "Technique", "techniqueOther", "Abstract", "Methods", "technicalInfo" ],
-    "Funders": [ "datasetID", "funderName", "fundingReferenceIdentifier", "fundingReferenceIdentifierType", "awardNumber", "awardTitle" ],
-    "Image": [ "datasetID", "xAxis", "obliqueXDim1", "obliqueXDim2", "obliqueXDim3", "yAxis", "obliqueYDim1", "obliqueYDim2", "obliqueYDim3", "zAxis", "obliqueZDim1", "obliqueZDim2", "obliqueZDim3", "landmarkName", "landmarkX", "landmarkY", "landmarkZ", "Number", "displayColor", "Representation", "Flurophore", "stepSizeX", "stepSizeY", "stepSizeZ", "stepSizeT", "Channel", "Slices", "t", "xSize", "ySize", "zSize", "Gbyte", "File", "dimensionOrder" ],
-    "Instrument": [ "datasetID", "microscopeType", "microscopeManufacturerAndModel", "objectiveManufacturerAndModel", "objectiveImmersion", "objectiveNA", "objectiveMagnification", "detectorType", "detectorManufacturerAndModel", "illuminationType", "illuminationWavelength", "detectionWavelength", "sampleTemperature" ],
-    "Publications": [ "datasetID", "relatedIdentifier", "relatedIdentifierType", "PMCID", "relationType", "Citation" ],
-    "Specimen": [ "datasetID", "localID", "Species", "NCBITaxonomy", "Age", "ageUnit", "Sex", "Genotype", "organLocalID", "organName", "sampleLocalID", "Atlas", "Location" ]
+  #  "Contributors": [ "datasetID", "contributorName", "Creator", "contributorType", "nameType", "nameIdentifier", "nameIdentifierScheme", "affiliation", "affiliationIdentifier", "affiliationIdentifierScheme" ],
+  #    "Dataset": [ "datasetID", "Title", "socialMedia", "Subject", "subjectScheme", "Rights", "rightsURI", "rightsIdentifier", "Image", "generalModality", "generalModalityOther", "Technique", "techniqueOther", "Abstract", "Methods", "technicalInfo" ],
+  #  "testing": [ "datasetID", "funderName", "fundingReferenceIdentifier", "fundingReferenceIdentifierType", "awardNumber", "awardTitle" ],
+ #   "Image": [ "datasetID", "xAxis", "obliqueXDim1", "obliqueXDim2", "obliqueXDim3", "yAxis", "obliqueYDim1", "obliqueYDim2", "obliqueYDim3", "zAxis", "obliqueZDim1", "obliqueZDim2", "obliqueZDim3", "landmarkName", "landmarkX", "landmarkY", "landmarkZ", "Number", "displayColor", "Representation", "Flurophore", "stepSizeX", "stepSizeY", "stepSizeZ", "stepSizeT", "Channel", "Slices", "t", "xSize", "ySize", "zSize", "Gbyte", "File", "dimensionOrder" ],
+  #  "Instrument": [ "datasetID", "microscopeType", "microscopeManufacturerAndModel", "objectiveManufacturerAndModel", "objectiveImmersion", "objectiveNA", "objectiveMagnification", "detectorType", "detectorManufacturerAndModel", "illuminationType", "illuminationWavelength", "detectionWavelength", "sampleTemperature" ],
+   # "Publications": [ "datasetID", "relatedIdentifier", "relatedIdentifierType", "PMCID", "relationType", "Citation" ],
+   # "Specimen": [ "datasetID", "localID", "Species", "NCBITaxonomy", "Age", "ageUnit", "Sex", "Genotype", "organLocalID", "organName", "sampleLocalID", "Atlas", "Location" ],
+#contributors changes to projects
+    "projects": [ "ID", "Name", "Title", "ShortTitle", "Description", "Protocol", "BossDBURIs", "GrantNumber", "Grant Name", "PublicationDOI", "Year", "License", "Keywords"],
+#Dataset changed to collection
+    "collections": [ "ID", "Name", "BOSSDBURI", "Title", "Description", "Public", "Creator", "Contributors", "DateCreated", "DateModified", "License", "Organization", "GrantNumber", "R24Name", "R24Link", "Version", "Species", "Experiments"],
+#testing changed to experiments
+    "experiments": [ "ID", "ExperimentName", "BCDCCollection", "BOSSDBURI", "SampleType", "SpeciesCommonName", "SpeciesTaxonomyID", "GenoType", "SubjectID", "Age", "Sex", "Modality", "Technique", "AnatomicalStructure", "ParentSpecimenID", "ParentSpecimentType", "SubspecimentQuantity", "Investigator", "Description", "BICCNDeliveryQuarter", "Protocol", "Public", "Creator", "Contributors", "DateCreated", "DateModified", "License", "ImageLocation", "CoordinateFrame", "Version", "Channels"],
+#image changed to channels
+    "channels": [ "ID", "Name", "BCDCCollection", "BossDBURI", "Description", "ArchiveURL", "Creator", "DateCreated", "ChannelType", "DataType", "Public", "Contributors", "License"]
+   #rm Instrument, publication, specimen
 }
+
 
 print(f'\nValidating submitted instance for category: "record"...')
 
@@ -297,12 +309,14 @@ except exceptions.ValidationError:
     print(f"Validation error(s) found: {len(error_list)}")
     i = 1
     for error in error_list:
-        category = list(set(error.schema_path).intersection(list(categories_dict.keys())))[0]
-        property = list(set(error.schema_path).intersection(categories_dict[category]))
-        if len(property) == 0:
-            property = "missing"
-        print(f"\nError {i}:")
-        print(f"Category: {''.join(category)}")        
-        print(f"Property: {''.join(property)}")
-        print(error.message)
-        i += 1
+        category = list(set(error.schema_path).intersection(list(categories_dict.keys())))
+        #property = list(set(error.schema_path).intersection(categories_dict[category]))
+        #property = (set(error.schema_path).intersection(categories_dict[category]))
+
+        #if len(property) == 0:
+      #      property = "missing"
+      #  print(f"\nError {i}:")
+     #   print(f"Category: {''.join(category)}")        
+      #  print(f"Property: {''.join(property)}")
+     #   print(error.message)
+     #   i += 1

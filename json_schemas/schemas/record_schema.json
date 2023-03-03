@@ -23,7 +23,7 @@
           "type": "string"
         },
               "contributorName": {
-                "description": "Person (last name, first name) or organization (e.g., research group, department, institution) contributing to or responsible for the project, but does not include funders of the project.",
+                "description": "Person (last name, first name) or organization (e.g., research group, department, institution) contributing to or responsible for the project, but does not include testing of the project.",
                 "type": "string"
               },
               "Creator": {
@@ -148,8 +148,8 @@
             }
           }
         },
-        "Funders": {
-          "description": "The Funders category includes five metadata fields that describe the organizations providing financial support for the generation of the dataset.",
+        "testing": {
+          "description": "The testing category includes five metadata fields that describe the organizations providing financial support for the generation of the dataset.",
           "type": "array",
           "items": {
             "Funder": {
@@ -1031,7 +1031,7 @@
       "required": [
         "Contributors",
         "Dataset",
-        "Funders",
+        "testing",
         "Image",
         "Instrument",
         "Specimen"
