@@ -17,7 +17,7 @@ Input files should be placed in the directory `json_schemas/input_files`.
 ## Data Conversion and Validation usage
 
 ### Purpose
-The conversion script is used to convert input datasets in Excel form to a JSON format, which is then run through a JSON Schema validator to confirm that the data meets criteria found on the DORY website.  After converting the datasets from Excel to JSON formats, the validator will check the newly generated JSON file against pre-defined JSON schemas.  Any resulting discrepancies or errors will be displayed on the command line terminal.
+The conversion script is used to convert input datasets in Excel form to a JSON format, which is then run through a JSON Schema validator to confirm that the data meets criteria.  After converting the datasets from Excel to JSON formats, the validator will check the newly generated JSON file against pre-defined JSON schemas.  Any resulting discrepancies or errors will be displayed on the command line terminal.
 
 ### Usage
 To run the conversion script, from the main directory, run the following in the command line.
