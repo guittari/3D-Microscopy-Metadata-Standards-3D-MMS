@@ -57,13 +57,10 @@ schema = load_schema(input_category)
 # =========================== Initializing Category dict =======================================
 # creating a dictionary as "master" list with categories and their respective expected columns
 categories_dict = {
-    "Contributors": [ "datasetID", "contributorName", "Creator", "contributorType", "nameType", "nameIdentifier", "nameIdentifierScheme", "affiliation", "affiliationIdentifier", "affiliationIdentifierScheme" ],
-    "Dataset": [ "datasetID", "Title", "socialMedia", "Subject", "subjectScheme", "Rights", "rightsURI", "rightsIdentifier", "Image", "generalModality", "generalModalityOther", "Technique", "techniqueOther", "Abstract", "Methods", "technicalInfo" ],
-    "testing": [ "datasetID", "funderName", "fundingReferenceIdentifier", "fundingReferenceIdentifierType", "awardNumber", "awardTitle" ],
-    "Image": [ "datasetID", "xAxis", "obliqueXDim1", "obliqueXDim2", "obliqueXDim3", "yAxis", "obliqueYDim1", "obliqueYDim2", "obliqueYDim3", "zAxis", "obliqueZDim1", "obliqueZDim2", "obliqueZDim3", "landmarkName", "landmarkX", "landmarkY", "landmarkZ", "Number", "displayColor", "Representation", "Flurophore", "stepSizeX", "stepSizeY", "stepSizeZ", "stepSizeT", "Channel", "Slices", "t", "xSize", "ySize", "zSize", "Gbyte", "File", "dimensionOrder" ],
-    "Instrument": [ "datasetID", "microscopeType", "microscopeManufacturerAndModel", "objectiveManufacturerAndModel", "objectiveImmersion", "objectiveNA", "objectiveMagnification", "detectorType", "detectorManufacturerAndModel", "illuminationType", "illuminationWavelength", "detectionWavelength", "sampleTemperature" ],
-    "Publications": [ "datasetID", "relatedIdentifier", "relatedIdentifierType", "PMCID", "relationType", "Citation" ],
-    "Specimen": [ "datasetID", "localID", "Species", "NCBITaxonomy", "Age", "ageUnit", "Sex", "Genotype", "organLocalID", "organName", "sampleLocalID", "Atlas", "Location" ]
+    "projects": [ "ID", "Name", "Title", "ShortTitle", "Description", "Protocol", "BossDBURIs", "GrantNumber", "Grant Name", "PublicationDOI", "Year", "License", "Keywords"],
+    "collections": [ "ID", "Name", "BOSSDBURI", "Title", "Description", "Public", "Creator", "Contributors", "DateCreated", "DateModified", "License", "Organization", "GrantNumber", "R24Name", "R24Link", "Version", "Species", "Experiments"],
+    "experiments": [ "ID", "ExperimentName", "BCDCCollection", "BOSSDBURI", "SampleType", "SpeciesCommonName", "SpeciesTaxonomyID", "GenoType", "SubjectID", "Age", "Sex", "Modality", "Technique", "AnatomicalStructure", "ParentSpecimenID", "ParentSpecimentType", "SubspecimentQuantity", "Investigator", "Description", "BICCNDeliveryQuarter", "Protocol", "Public", "Creator", "Contributors", "DateCreated", "DateModified", "License", "ImageLocation", "CoordinateFrame", "Version", "Channels"],
+    "channels": [ "ID", "Name", "BCDCCollection", "BossDBURI", "Description", "ArchiveURL", "Creator", "DateCreated", "ChannelType", "DataType", "Public", "Contributors", "License"]
 }
 
 # =========================== Checking and returning any ValidationErrors =======================================

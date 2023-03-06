@@ -26,18 +26,16 @@ def split_csv(val):
     :param val (str, req): string value to be split
     :return: input string split into a list
     """
-    p = "\([^\)\(]*\)"  # matches sets of parentheses
-   # p = "\|[^\|\|]*\|"  # matches sets of bars
+    p = "\|[^\|\|]*\|"  # matches sets of bars
     if type(val) != str:
         return val
-    matches = re.findall(p, val) # find all sets of parentheses
+    matches = re.findall(p, val) # find all bars
     num_matches = len(matches)
 
-    if num_matches == 0: # if there are no parentheses, split using a ","
-        split_val = val.split(',')
-    elif num_matches == 1: # if there is one set of parentheses, remove the parentheses and split using a ""
-        split_val = val[1:-1].split("| |")
-    elif num_matches > 1: # if there are multiple sets of parentheses, split on the parentheses
+    if num_matches == 0: # if there are no bars, split words using a "|"
+        split_val = val.split('|')
+
+    elif num_matches > 1: # if there are multiple sets of bars, split on the bars
         split_val = list(matches)
 
     for j, k in enumerate(split_val): # for each element in split_val
@@ -55,7 +53,7 @@ def extract_csvs(input_excel_file, datestamp):
     :return: None
     """
 
-    sheet_names = ['projects', 'Collections', 'Experiments', 'Channels']
+    sheet_names = ['Projects', 'Collections', 'Experiments', 'Channels']
     excel_dict = pd.read_excel(input_excel_file, sheet_name=None, engine="openpyxl")
     path = f"json_schemas/output_files/{datestamp}"
 
@@ -265,7 +263,7 @@ input_excel_file = args.input_excel_file
 today = pd.to_datetime("today")
 datestamp = f'{today.month}{today.day}{today.year}'
 
-# input_excel_file = "json_schemas/input_files/3D_microscopy_metadata_entry_template.xlsm"
+# input_excel_file = "json_schemas/input_files/data.xlsm"
 input_excel_path = "json_schemas/input_files/" + input_excel_file
 extract_csvs(input_excel_path, datestamp)
 

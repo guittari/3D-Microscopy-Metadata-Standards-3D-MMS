@@ -1,8 +1,8 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "IMAGE",
-    "title": "Image",
-    "description": "The Image category includes 33 metadata fields that describe the size and 3-dimensional orientation of the image, the channels and fluorophores used, and the location of relevant landmarks.",
+    "$id": "CHANNELS",
+    "title": "channels",
+    "description": "The channels category includs ...",
 		"type": "object",
 		"required": ["xAxis","yAxis","zAxis","Number","displayColor","stepSizeX","stepSizeY"],
         "additionalProperties": false,
