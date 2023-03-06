@@ -1,7 +1,6 @@
 import json
 import yaml
 import argparse
-
 from jsonschema import validate, exceptions
 from jsonschema.validators import Draft7Validator
 
@@ -10,8 +9,7 @@ from jsonschema.validators import Draft7Validator
 This script takes an input JSON file containing metadata for a specified Category and validates
 that data against its corresponding JSON schema.  Any discrepancies between the metadata structure and its schema will
 be displayed on the command line as a ValidationError along with relevant info about where the issue is.
-The input JSON file should be placed in the directory below.
-Input JSON file directory: 3D-Microscopy-Metadata-Standards-3D-MMS/json_schemas/input_files
+The input JSON file should be placed in the directory, .../json_schemas/input_files/data.xlsm
 
 '''
 
