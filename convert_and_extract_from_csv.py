@@ -14,10 +14,10 @@ from jsonschema.validators import Draft7Validator
 # ========================================== Script Information ===========================================
 '''
 This script takes an input data entry excel file containing metadata and splits it into individual 
-csv files for each metadata group (projects, testing, etc.). The individual csv files are then parsed and converted
+csv files for each metadata group (projects,collections,experiments,and channels.). The individual csv files are then parsed and converted
 into a dictionary representation of the metadata record which is then written to a json file. The json file can be
 validated against record_schema.json.
-Data entry file: 3D-Microscopy-Metadata-Standards-3D-MMS/json_schemas/input_files/3D_brain_microscopy_metadata_entry_template.xlsm 
+/Users/guittnk3/Documents/GitHub/ComputationallyFixingExcel/json_schemas/input_files/data.xlsm
 '''
 # ========================================== Functions ===========================================
 def split_csv(val):
@@ -56,7 +56,6 @@ def extract_csvs(input_excel_file, datestamp):
     """
 
     sheet_names = ['projects', 'Collections', 'Experiments', 'Channels']
-                   #'Publications', 'testing', 'Instrument', 'Dataset', "Specimen", "Image", "README", "dropdown"]
     excel_dict = pd.read_excel(input_excel_file, sheet_name=None, engine="openpyxl")
     path = f"json_schemas/output_files/{datestamp}"
 
@@ -278,22 +277,10 @@ write_json(metadata_record, datestamp)
 schema = load_schema('record')
 
 categories_dict = {
-  #  "Contributors": [ "datasetID", "contributorName", "Creator", "contributorType", "nameType", "nameIdentifier", "nameIdentifierScheme", "affiliation", "affiliationIdentifier", "affiliationIdentifierScheme" ],
-  #    "Dataset": [ "datasetID", "Title", "socialMedia", "Subject", "subjectScheme", "Rights", "rightsURI", "rightsIdentifier", "Image", "generalModality", "generalModalityOther", "Technique", "techniqueOther", "Abstract", "Methods", "technicalInfo" ],
-  #  "testing": [ "datasetID", "funderName", "fundingReferenceIdentifier", "fundingReferenceIdentifierType", "awardNumber", "awardTitle" ],
- #   "Image": [ "datasetID", "xAxis", "obliqueXDim1", "obliqueXDim2", "obliqueXDim3", "yAxis", "obliqueYDim1", "obliqueYDim2", "obliqueYDim3", "zAxis", "obliqueZDim1", "obliqueZDim2", "obliqueZDim3", "landmarkName", "landmarkX", "landmarkY", "landmarkZ", "Number", "displayColor", "Representation", "Flurophore", "stepSizeX", "stepSizeY", "stepSizeZ", "stepSizeT", "Channel", "Slices", "t", "xSize", "ySize", "zSize", "Gbyte", "File", "dimensionOrder" ],
-  #  "Instrument": [ "datasetID", "microscopeType", "microscopeManufacturerAndModel", "objectiveManufacturerAndModel", "objectiveImmersion", "objectiveNA", "objectiveMagnification", "detectorType", "detectorManufacturerAndModel", "illuminationType", "illuminationWavelength", "detectionWavelength", "sampleTemperature" ],
-   # "Publications": [ "datasetID", "relatedIdentifier", "relatedIdentifierType", "PMCID", "relationType", "Citation" ],
-   # "Specimen": [ "datasetID", "localID", "Species", "NCBITaxonomy", "Age", "ageUnit", "Sex", "Genotype", "organLocalID", "organName", "sampleLocalID", "Atlas", "Location" ],
-#contributors changes to projects
     "projects": [ "ID", "Name", "Title", "ShortTitle", "Description", "Protocol", "BossDBURIs", "GrantNumber", "Grant Name", "PublicationDOI", "Year", "License", "Keywords"],
-#Dataset changed to collection
     "collections": [ "ID", "Name", "BOSSDBURI", "Title", "Description", "Public", "Creator", "Contributors", "DateCreated", "DateModified", "License", "Organization", "GrantNumber", "R24Name", "R24Link", "Version", "Species", "Experiments"],
-#testing changed to experiments
     "experiments": [ "ID", "ExperimentName", "BCDCCollection", "BOSSDBURI", "SampleType", "SpeciesCommonName", "SpeciesTaxonomyID", "GenoType", "SubjectID", "Age", "Sex", "Modality", "Technique", "AnatomicalStructure", "ParentSpecimenID", "ParentSpecimentType", "SubspecimentQuantity", "Investigator", "Description", "BICCNDeliveryQuarter", "Protocol", "Public", "Creator", "Contributors", "DateCreated", "DateModified", "License", "ImageLocation", "CoordinateFrame", "Version", "Channels"],
-#image changed to channels
     "channels": [ "ID", "Name", "BCDCCollection", "BossDBURI", "Description", "ArchiveURL", "Creator", "DateCreated", "ChannelType", "DataType", "Public", "Contributors", "License"]
-   #rm Instrument, publication, specimen
 }
 
 
@@ -310,13 +297,3 @@ except exceptions.ValidationError:
     i = 1
     for error in error_list:
         category = list(set(error.schema_path).intersection(list(categories_dict.keys())))
-        #property = list(set(error.schema_path).intersection(categories_dict[category]))
-        #property = (set(error.schema_path).intersection(categories_dict[category]))
-
-        #if len(property) == 0:
-      #      property = "missing"
-      #  print(f"\nError {i}:")
-     #   print(f"Category: {''.join(category)}")        
-      #  print(f"Property: {''.join(property)}")
-     #   print(error.message)
-     #   i += 1
