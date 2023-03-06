@@ -5,14 +5,14 @@ This work is to eliminate issues found by manually entering connectomic data for
 A `config.yaml` file is provided where a user can specify input files and categories for the Data Conversion and Validator scripts.  Parameters corresponding to each script are as follows:
 
 `convert_and_extract_from_csv.py`
-- input_excel_file: specifies which Excel workbook to use. We are using data.xlsx for our intended work
+- input_excel_file: specifies which Excel workbook to use. We are using data.xlsm for our intended work
 
 `json_schema_validator.py`
 - category: specifies which metadata category to validate against
 - input_file_name: specifies which input JSON file to validate
 
 Input files should be placed in the directory `json_schemas/input_files`.
-
+Output files will be displayed in the newly created json_schemas/output_files` folder. This will contain a separate excel sheet for each sheet in the orginal excel, data.xlsm. 
 
 ## Data Conversion and Validation usage
 
