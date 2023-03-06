@@ -5,7 +5,7 @@ This work is to eliminate issues found by manually entering connectomic data for
 A `config.yaml` file is provided where a user can specify input files and categories for the Data Conversion and Validator scripts.  Parameters corresponding to each script are as follows:
 
 `convert_and_extract_from_csv.py`
-- input_excel_file: specifies which Excel workbook to use
+- input_excel_file: specifies which Excel workbook to use. We are using data.xlsx for our intended work
 
 `json_schema_validator.py`
 - category: specifies which metadata category to validate against
@@ -35,13 +35,8 @@ python convert_and_extract_from_csv.py -i example_metadata_file_here.xlsx
 ```
 usage: convert_and_extract_from_csv.py [-h] [-i INPUT_EXCEL_FILE]
 
-Run the conversion script.
+Run the conversion script.The folder, output will be generated with corrected csv files. 
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -i INPUT_EXCEL_FILE, --input_excel_file INPUT_EXCEL_FILE       
-                        Tell which input Excel file to convert. 
-```
 
 ## Validator usage
 The JSON Validator takes in a user's submitted data in JSON form and compares its contents to the specifications of the corresponding categorical JSON schema, returning a message indicating if any errors found and along with details of found errors.
@@ -67,11 +62,3 @@ usage: json_schema_test.py [-h] [-i INPUT_FILE_NAME]
                            [-c {projects,collections,experiments,channels}]
 
 Run the annotators.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -i INPUT_FILE_NAME, --input_file_name INPUT_FILE_NAME
-                        Tell which input data file to validate.
-  -c {projects,collections,experiments,channels}, --category {projects,collections,experiments,channels}
-                        Metadata category to validate
-```
